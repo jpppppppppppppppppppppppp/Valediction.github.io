@@ -1,0 +1,284 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+    <title>地图显示</title>
+    <style>
+        html,
+        body,
+        #container {
+          width: 100%;
+          height: 100%;
+        }
+    </style>
+</head>
+
+
+<body>
+
+<div id="container"></div>
+
+
+<script language="javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=92f443c6872b9d93cac77b3db3d20557&plugin=Map3D,AMap.DistrictLayer,AMap.Scale,AMap.ToolBar"></script>
+<script type="text/javascript">
+
+var SOC = 'CHN'
+var colors = {};
+var GDPSpeed = {
+    '520000':6,//贵州
+    '540000':6,//西藏
+    '530000':6,//云南 
+    '500000':6,//重庆
+    '360000':6,//江西
+    '340000':7.5,//安徽
+    '510000':7.5,//四川
+    '350000':6,//福建
+    '430000':7,//湖南
+    '420000':7, //湖北
+    '410000':6,//河南
+    '330000':10,//浙江
+    '640000':6,//宁夏
+    '650000':6,//新疆
+    '440000':8,//广东
+    '370000':7,//山东
+    '450000':6,//广西
+    '630000':6,//青海
+    '320000':7,//江苏
+    '140000':6,//山西
+    '460000':6,// 海南
+    '310000':8.5,//上海
+    '110000':9, // 北京
+    '130000':6, // 河北
+    '230000':7, // 黑龙江
+    '220000':6,// 吉林
+    '210000':6, //辽宁
+    '150000':6,//内蒙古
+    '120000':6,// 天津
+    '620000':6,// 甘肃
+    '610000':7,// 陕西
+    '710000':6, //台湾
+    '810000':6, //香港
+    '820000':6 //澳门
+
+}
+var getColorByDGP = function(adcode){
+    if(!colors[adcode]){
+        var gdp = GDPSpeed[adcode];
+        if(!gdp){
+            colors[adcode] = 'rgb(227,227,227)'
+        }else{   
+            var rg = 255-Math.floor((gdp-5)/5*255);
+            colors[adcode] = 'rgb('+ rg +','+ rg +',255)';
+        }
+    }
+    return colors[adcode]
+}
+
+var disCountry = new AMap.DistrictLayer.Country({
+    zIndex:10,
+    SOC:'CHN',
+    depth:2,
+    styles:{
+        'nation-stroke':'#22ffff',
+        'coastline-stroke':[0.85, 0.63, 0.94, 1],
+        'province-stroke':'white',
+        'city-stroke': 'rgba(255,255,255,0.15)',//中国特有字段
+        'fill':function(props){//中国特有字段
+           return getColorByDGP(props.adcode_pro)
+        }
+    }
+})
+
+
+var map = new AMap.Map("container",{
+        zooms: [3, 10],
+        showIndoorMap:false,
+        zoom: 3,
+        isHotspot:false,
+        defaultCursor:'pointer',
+        touchZoomCenter:1,
+        pitch: 0,
+        layers:[
+            disCountry,
+        ],
+        resizeEnable: true
+})
+map.addControl(new AMap.Scale());
+map.addControl(new AMap.ToolBar({liteStyle:true}));
+map.on('complete',function(){
+    document.getElementsByClassName('amap-mcode')[0].innerHTML = '-GS(2020)617号、GS(2019)756号'
+})
+
+
+
+var title = ['北京大学<span style="font-size:20px;color:#F00;">李张鑫</span>',
+	'清华大学<span style="font-size:20px;color:#F00;">胡桐  陈鑫律  郑雨甜  朱浩宇  吕宇轩</span>',
+	'中国人民公安大学<span style="font-size:20px;color:#F00;">汪亦阳</span>',
+	'北京航空航天大学<span style="font-size:20px;color:#F00;">彭黔甬</span>',
+	'北京理工大学<span style="font-size:20px;color:#F00;">黄若峰</span>',
+	'中国农业大学<span style="font-size:20px;color:#F00;">方瑾茗</span>',
+	'中国人民大学<span style="font-size:20px;color:#F00;">程琳</span>',
+	'中国科学院大学<span style="font-size:20px;color:#F00;">袁昊喆</span>',
+	'哈尔滨医科大学<span style="font-size:20px;color:#F00;">颜于程</span>',
+	'西安电子科技大学<span style="font-size:20px;color:#F00;">严如意</span>',
+	'山东大学<span style="font-size:20px;color:#F00;">张宏奕</span>',
+	'南京医科大学<span style="font-size:20px;color:#F00;">张哲宇</span>',
+	'复旦大学<span style="font-size:20px;color:#F00;">陈子麟  马驰骋  郑凯文</span>',
+	'上海交通大学<span style="font-size:20px;color:#F00;">俞芊成  詹凯期  江语  陈嘉昊</span>',
+	'同济大学<span style="font-size:20px;color:#F00;">王贝宁</span>',
+	'华东理工大学<span style="font-size:20px;color:#F00;">周煜茗</span>',
+	'浙江大学<span style="font-size:20px;color:#F00;">何宇阳  黄超煜  刘昱辰  汪佳磊  张健楚  钟子涵  竺承宇  周嘉杭  叶雪莹</span>',
+	'西湖大学<span style="font-size:20px;color:#F00;">许经纬</span>',
+	'浙江师范大学<span style="font-size:20px;color:#F00;">史亦峰</span>',
+	'温州医科大学<span style="font-size:20px;color:#F00;">鲁澍涵</span>',
+	'杭州电子科技大学<span style="font-size:20px;color:#F00;">湛翔</span>',
+	'中国计量大学<span style="font-size:20px;color:#F00;">包家伟</span>',
+	'合肥工业大学<span style="font-size:20px;color:#F00;">王松迪</span>',
+	'中国科学技术大学<span style="font-size:20px;color:#F00;">叶尧琦</span>',
+	'厦门大学<span style="font-size:20px;color:#F00;">王泽宁</span>',
+	'香港中文大学（深圳）<span style="font-size:20px;color:#F00;">贺行健</span>',
+	'南方科技大学<span style="font-size:20px;color:#F00;">潘健辉</span>',
+	'湖南大学<span style="font-size:20px;color:#F00;">王成辉</span>',
+	'华中科技大学<span style="font-size:20px;color:#F00;">郎诗韵</span>',
+	'电子科技大学<span style="font-size:20px;color:#F00;">叶煜凯</span>',
+	'西南交通大学<span style="font-size:20px;color:#F00;">段闻清</span>'],
+
+content = ["<img src='https://ss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/baike/s%3D220/sign=6e9e130a970a304e5622a7f8e1c9a7c3/34fae6cd7b899e519c325d1a42a7d933c8950d7b.jpg'>",
+	"<img src='https://img0.baidu.com/it/u=2067051004,48910786&fm=253&fmt=auto&app=138&f=JPEG?w=200&h=200'>",
+	"<img src='https://img1.baidu.com/it/u=1127564354,4085574771&fm=253&fmt=auto&app=120&f=JPEG?w=200&h=200'>",
+	"<img src='https://img1.baidu.com/it/u=1956374573,868682712&fm=253&fmt=auto&app=138&f=JPEG?w=200&h=200'>",
+	"<img src='https://img0.baidu.com/it/u=2479366898,4094758535&fm=253&fmt=auto&app=120&f=JPEG?w=200&h=200'>",
+	"<img src='https://img0.baidu.com/it/u=3213905614,4283106759&fm=253&fmt=auto&app=138&f=PNG?w=200&h=200'>",
+	"<img src='https://i03piccdn.sogoucdn.com/3637cc228193d56e'>",
+	"<img src='https://i02piccdn.sogoucdn.com/0a2c4ab6402acc30'>",
+	"<img src='https://img2.baidu.com/it/u=1909706457,1394956234&fm=253&fmt=auto&app=138&f=JPEG?w=200&h=200'>",
+	"<img src='https://img0.baidu.com/it/u=4213773312,1206688743&fm=253&fmt=auto&app=138&f=PNG?w=200&h=200'>",
+	"<img src='https://img0.baidu.com/it/u=3943693361,3173354778&fm=253&fmt=auto&app=138&f=PNG?w=200&h=200'>",
+	"<img src='https://img1.baidu.com/it/u=3142091453,3560955791&fm=253&fmt=auto&app=138&f=JPEG?w=200&h=200'>",
+	"<img src='https://img0.baidu.com/it/u=1256660274,1855238294&fm=253&fmt=auto&app=138&f=JPEG?w=200&h=200'>",
+	"<img src='https://img0.baidu.com/it/u=1633672108,3371437685&fm=253&fmt=auto&app=120&f=JPEG?w=200&h=200'>",
+	"<img src='https://img0.baidu.com/it/u=3275948043,1034453690&fm=253&fmt=auto&app=120&f=JPEG?w=200&h=200'>",
+	"<img src='https://img1.baidu.com/it/u=585683292,2118641562&fm=253&fmt=auto&app=120&f=JPEG?w=200&h=200'>",
+	"<img src='https://img0.baidu.com/it/u=3416079942,53549927&fm=253&fmt=auto&app=138&f=JPEG?w=200&h=200'>",
+	"<img src='https://img0.baidu.com/it/u=747174238,174739347&fm=253&fmt=auto&app=138&f=JPEG?w=200&h=200'>",
+	"<img src='https://img2.baidu.com/it/u=1860385547,3089293880&fm=253&fmt=auto&app=138&f=PNG?w=200&h=200'>",
+	"<img src='https://img1.baidu.com/it/u=1174949478,2023647658&fm=253&fmt=auto&app=138&f=JPEG?w=200&h=200'>",
+	"<img src='https://img2.baidu.com/it/u=1186955591,2751391384&fm=253&fmt=auto&app=138&f=JPEG?w=200&h=200'>",
+	"<img src='https://img1.baidu.com/it/u=3188201431,3756187118&fm=253&fmt=auto&app=138&f=JPEG?w=200&h=200'>",
+	"<img src='https://i02piccdn.sogoucdn.com/4ea933ea0e8d2f46'>",
+	"<img src='https://img2.baidu.com/it/u=2018307044,2479575858&fm=253&fmt=auto&app=120&f=JPEG?w=200&h=200'>",
+	"<img src='https://img1.baidu.com/it/u=29799246,4107963201&fm=253&fmt=auto&app=120&f=JPEG?w=200&h=200'>",
+	"<img src='https://img0.baidu.com/it/u=68629755,3552784709&fm=253&fmt=auto&app=138&f=JPEG?w=200&h=200'>",
+	"<img src='https://img2.baidu.com/it/u=19968160,1325551425&fm=253&fmt=auto&app=138&f=JPEG?w=200&h=200'>",
+	"<img src='https://i02piccdn.sogoucdn.com/6657a1cc87257ac7'>",
+	"<img src='https://i01piccdn.sogoucdn.com/e48e9cdd7d7661b3'>",
+	"<img src='https://img2.baidu.com/it/u=787081682,391419632&fm=253&fmt=auto&app=138&f=JPEG?w=200&h=200'>",
+	"<img src='https://img2.baidu.com/it/u=1865516622,525761947&fm=253&fmt=auto&app=138&f=JPEG?w=200&h=200'>"
+],
+
+position = [[116.310547,39.992828],
+[116.333374,40.009645],
+[116.343705,39.906724],
+[116.353792,39.98766],
+[116.322726,39.966659],
+[116.364154,40.010185],
+[116.319769,39.976546],
+[116.257207,39.915389],
+[126.6264,45.707524],
+[108.840053,34.129522],
+[117.066638,36.681366],
+[118.897191,31.944119],
+[121.510771,31.301911],
+[121.443287,31.03201],
+[121.508532,31.289027],
+[121.430226,31.149538],
+[120.092406,30.308304],
+[120.043092,30.335451],
+[119.649097,29.1406],
+[120.717326,27.931535],
+[120.146137,30.292945],
+[120.369036,30.327401],
+[117.302909,31.849406],
+[117.276137,31.842919],
+[118.110648,24.443141],
+[114.219305,22.694207],
+[114.005913,22.603944],
+[112.950693,28.186051],
+[114.419825,30.518659],
+[103.937404,30.756035],
+[103.993214,30.770399]
+];
+
+
+
+
+
+infoWindow = []
+for(let i=0;i<title.length;++i){
+    infoWindow[i] = new AMap.InfoWindow({
+    isCustom: true,  //使用自定义窗体
+    content: createInfoWindow(title[i], content[i]),
+    offset: new AMap.Pixel(16, -45)
+});
+    addMarker(i,position[i])
+    }
+
+function addMarker(i,p) {
+    var marker = new AMap.Marker({
+        map: map,
+        position: p
+    });
+    //鼠标点击marker弹出自定义的信息窗体
+    AMap.event.addListener(marker, 'click', function () {
+        infoWindow[i].open(map, marker.getPosition());
+    });
+}
+//构建自定义信息窗体
+function createInfoWindow(title, content) {
+    var info = document.createElement("div");
+    info.className = "custom-info input-card content-window-card";
+
+    //可以通过下面的方式修改自定义窗体的宽高
+    //info.style.width = "600px";
+    // 定义顶部标题
+    var top = document.createElement("div");
+    var titleD = document.createElement("div");
+    var closeX = document.createElement("img");
+    top.className = "info-top";
+    titleD.innerHTML = title;
+    closeX.src = "https://webapi.amap.com/images/close2.gif";
+    closeX.onclick = closeInfoWindow;
+
+    top.appendChild(titleD);
+    top.appendChild(closeX);
+    info.appendChild(top);
+
+    // 定义中部内容
+    var middle = document.createElement("div");
+    middle.className = "info-middle";
+    middle.style.backgroundColor = 'white';
+    middle.innerHTML = content;
+    info.appendChild(middle);
+
+    // 定义底部内容
+    var bottom = document.createElement("div");
+    bottom.className = "info-bottom";
+    bottom.style.position = 'relative';
+    bottom.style.top = '0px';
+    bottom.style.margin = '0 auto';
+    var sharp = document.createElement("img");
+    sharp.src = "https://webapi.amap.com/images/sharp.png";
+    bottom.appendChild(sharp);
+    info.appendChild(bottom);
+    return info;
+}
+//关闭信息窗体
+function closeInfoWindow() {
+    map.clearInfoWindow();
+}
+</script>
+</body>
+</html>
